@@ -1,17 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Chords app icon: a chart card on the stage-dark background.
+       A chord symbol (C7) sits over a bar of four beats and a line of lyrics.
+       Keep the drawing inside the middle ~300px so Android's round/squircle masks never cut it. -->
   <rect width="512" height="512" fill="#1c1917"/>
-  <!-- two bars of a chart: bar lines, beat dots and a chord in each -->
-  <g stroke="#cfc4b6" stroke-width="14" stroke-linecap="round">
-    <path d="M96 150v212M256 150v212M416 150v212"/>
-  </g>
-  <g fill="#ff9a6b">
-    <circle cx="146" cy="226" r="34"/>
-    <circle cx="306" cy="286" r="34"/>
-    <rect x="166" y="120" width="12" height="108" rx="6"/>
-    <rect x="326" y="180" width="12" height="108" rx="6"/>
-  </g>
-  <g fill="#6b625a">
-    <circle cx="126" cy="330" r="9"/><circle cx="166" cy="330" r="9"/><circle cx="206" cy="330" r="9"/>
-    <circle cx="286" cy="330" r="9"/><circle cx="326" cy="330" r="9"/><circle cx="366" cy="330" r="9"/>
+  <!-- flat #1c1917 so it matches the Android adaptive-icon background set in build.yml -->
+  <!-- glow behind the card -->
+  <circle cx="256" cy="262" r="170" fill="#ff9a6b" opacity="0.10"/>
+  <g transform="rotate(-6 256 256)">
+    <!-- shadow and paper -->
+    <rect x="132" y="118" width="256" height="296" rx="30" fill="#000" opacity="0.35"/>
+    <rect x="128" y="108" width="256" height="296" rx="30" fill="#f6f1ea"/>
+    <!-- chord symbol: C with a small 7 -->
+    <g fill="none" stroke="#c4501f" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M248 160 A46 46 0 1 0 248 228" stroke-width="28"/>
+      <path d="M274 152 H312 L288 212" stroke-width="16"/>
+    </g>
+    <!-- a bar: bar lines and four beats -->
+    <g stroke="#a99f95" stroke-width="9" stroke-linecap="round">
+      <path d="M160 268 V320 M352 268 V320"/>
+    </g>
+    <g fill="#3b3530">
+      <circle cx="194" cy="294" r="11"/>
+      <circle cx="235" cy="294" r="11"/>
+      <circle cx="277" cy="294" r="11"/>
+      <circle cx="318" cy="294" r="11"/>
+    </g>
+    <!-- lyrics -->
+    <g fill="#cfc4b6">
+      <rect x="160" y="346" width="96" height="16" rx="8"/>
+      <rect x="268" y="346" width="84" height="16" rx="8"/>
+    </g>
   </g>
 </svg>
