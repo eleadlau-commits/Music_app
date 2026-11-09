@@ -1,0 +1,12 @@
+{
+  "name": "Songs",
+  "description": "Your song list: import .chords files or paste what Claude wrote, search, and open a chart.",
+  "version": "1.0.0",
+  "main": "Songs.js",
+  "styles": [
+    "style.css"
+  ],
+  "requires": [
+    "chord-format"
+  ]
+}

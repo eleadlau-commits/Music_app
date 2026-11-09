@@ -1,0 +1,13 @@
+.guide { padding-bottom: 24px; }
+.guide .panel h2 { margin-top: 0; }
+.guide-steps { margin: 0 0 12px; padding-left: 20px; display: grid; gap: 4px; }
+.guide-claude input { margin-bottom: 8px; }
+.guide-code {
+  margin: 8px 0 0; padding: 12px; overflow-x: auto; white-space: pre;
+  font-family: var(--chart-mono); font-size: 12.5px; line-height: 1.5;
+  background: var(--surface-2); border-radius: var(--shape-sm);
+}
+.guide-claude .guide-code { white-space: pre-wrap; }
+.guide-example-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.guide-example .chart { padding-bottom: 0; }
+.guide-copy { font-family: var(--chart-mono); font-size: 13px; }

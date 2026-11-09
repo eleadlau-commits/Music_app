@@ -1,0 +1,92 @@
+/* A chart. Sizes are in em, so the text-size buttons (--chart-size) scale everything. */
+.chart-dialog { --gutter: 12px; }
+.chart-dialog .dialog-body { width: min(100%, 980px); }
+
+.chart-tools { display: grid; gap: 8px; padding-top: 4px; }
+.chart-tools-row { display: flex; gap: 8px; align-items: center; }
+.chart-tools-row .seg { flex: 1; }
+.chart-key, .chart-size { display: flex; align-items: center; gap: 4px; background: var(--surface-2); border-radius: var(--shape-btn); padding: 3px; }
+.chart-key .icon-btn, .chart-size .icon-btn { font-size: 18px; font-weight: 600; background: transparent; box-shadow: none; }
+.chart-key-name {
+  min-width: 64px; height: 40px; padding: 0 8px; border: 0; border-radius: var(--shape-btn);
+  background: var(--surface); color: var(--text); font: inherit; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1;
+}
+.chart-key-name small { color: var(--accent); font-size: 11px; font-weight: 600; }
+
+.chart-problems { background: var(--surface-2); border-radius: var(--shape-sm); padding: 8px 12px; font-size: 14px; }
+.chart-problems.has-errors { background: var(--danger-soft); }
+.chart-problems summary { cursor: pointer; font-weight: 600; }
+.chart-problems ul { margin: 8px 0 0; padding-left: 18px; }
+
+.chart { font-size: calc(16px * var(--chart-size, 1)); padding-bottom: 96px; }
+.chart-head { display: grid; gap: 4px; margin: 4px 0 8px; }
+.chart-artist { color: var(--muted); font-size: 1.05em; }
+.chart-facts { display: flex; flex-wrap: wrap; gap: 6px; }
+.chart-facts span { font-size: 0.85em; padding: 2px 8px; background: var(--surface-2); border-radius: var(--shape-sm); }
+.chart-notes { margin: 4px 0 0; color: var(--text-2); font-size: 0.9em; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.8em; color: var(--muted); }
+
+.chart-section { margin-top: 1.2em; }
+.section-name {
+  display: flex; align-items: center; gap: 8px; margin: 0 0 0.4em;
+  font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+}
+.line-repeat {
+  flex: none; align-self: center; font-family: var(--chart-mono); font-size: 0.85em; font-weight: 700;
+  color: var(--accent); padding: 0 6px; border: 1.5px solid currentColor; border-radius: var(--shape-sm);
+  text-transform: none; letter-spacing: 0;
+}
+.cue { margin: 0.3em 0; color: var(--cue); font-style: italic; font-size: 0.95em; }
+.cue::before { content: "▸ "; font-style: normal; }
+.words { margin: 0.3em 0; }
+
+/* Bars: one row per line of the file; they wrap when there isn't room. */
+.bars-line { display: flex; flex-wrap: wrap; align-items: stretch; margin: 0 0 0.5em; border-left: 2px solid var(--bar-line); }
+.bar { position: relative; flex: 1 1 4.5em; min-width: 0; padding: 0 0.2em; border-right: 2px solid var(--bar-line); }
+.bar-changes { display: flex; gap: 6px; font-size: 0.7em; font-weight: 700; color: var(--muted); height: 1.5em; align-items: center; }
+.bar-changes .line-repeat { margin-left: auto; font-size: 1em; }
+.bar-changes .time-sig { font-family: var(--chart-mono); color: var(--text); }
+.bar-changes .key-change { color: var(--accent); }
+.bar-body { position: relative; height: 3.6em; }
+.ev { position: absolute; bottom: 0.7em; display: flex; flex-direction: column; align-items: flex-start; white-space: nowrap; padding-left: 0.15em; }
+.ev .ch { font-family: var(--chart-mono); font-weight: 700; font-size: 1.05em; color: var(--chord); line-height: 1.2; }
+.ev.rest .ch, .ev.text .ch { color: var(--muted); font-size: 0.95em; }
+.ev.tight .ch { font-size: 0.85em; }
+.ev.raised { bottom: 2.1em; }
+.ev.bar-mark { bottom: 2.2em; }
+.bar.repeat .ev .ch { opacity: 0.55; }
+.mks { display: flex; gap: 2px; }
+.mk {
+  display: inline-block; font-size: 0.7em; font-weight: 700; line-height: 1.4; padding: 0 4px;
+  color: var(--mark); background: var(--mark-soft); border-radius: var(--shape-sm); white-space: nowrap;
+}
+.beats { position: absolute; left: 0; right: 0; bottom: 0.2em; display: flex; justify-content: space-around; pointer-events: none; }
+.beats i { width: 3px; height: 3px; border-radius: 50%; background: var(--bar-line); }
+
+/* Lyrics: each chord over the word it lands on. */
+.lyric-block { margin: 0 0 0.6em; }
+.lyric-row { display: flex; flex-wrap: wrap; align-items: flex-end; row-gap: 0.3em; margin-bottom: 0.25em; }
+.lyric-row > .line-repeat { margin-right: 6px; align-self: flex-end; margin-bottom: 0.3em; }
+.cell { display: inline-flex; flex-direction: column; white-space: pre; }
+.cell.bar-start { border-left: 1.5px solid var(--bar-line); padding-left: 0.3em; margin-left: 0.15em; }
+.cell.empty { min-width: 1.2em; }
+.cell-chord {
+  display: flex; align-items: flex-end; gap: 3px; padding-right: 0.5em;
+  font-family: var(--chart-mono); font-weight: 700; font-size: 1.05em; color: var(--chord); line-height: 1.25;
+}
+.cell-words { font-size: 1.05em; line-height: 1.35; }
+
+/* Scrolling by itself */
+.chart-play { position: fixed; right: calc(16px + env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; gap: 8px; align-items: center; z-index: 2; }
+.chart-go, .chart-speed { border: 0; font: inherit; cursor: pointer; box-shadow: 0 4px 16px rgb(0 0 0 / .25); }
+.chart-go { width: 60px; height: 60px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-size: 20px; }
+.chart-go.on { background: var(--text); color: var(--bg); }
+.chart-speed { height: 40px; padding: 0 14px; border-radius: 20px; background: var(--surface); color: var(--text); font-size: 14px; font-weight: 600; }
+
+.chart-tool-list { display: grid; gap: 4px; }
+.chart-tool {
+  display: flex; align-items: center; gap: 12px; padding: 14px 12px; border: 0; border-radius: var(--shape-btn);
+  background: transparent; color: var(--text); font: inherit; text-align: left; cursor: pointer;
+}
+.chart-tool:hover, .chart-tool:focus-visible { background: var(--surface-2); }

@@ -1,0 +1,26 @@
+.songs-search { width: 100%; }
+.songs-list { display: flex; flex-direction: column; gap: 8px; padding: 4px 0 24px; }
+
+.song-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 14px 14px 16px; min-height: 64px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--shape);
+  cursor: pointer;
+}
+.song-row:active { background: var(--surface-2); }
+.song-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.song-row > svg { color: var(--muted); flex: none; }
+.song-main { flex: 1; min-width: 0; }
+.song-title { font-weight: 600; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.song-sub { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.song-flag {
+  flex: none; font-size: 12px; font-weight: 600; padding: 2px 8px;
+  color: var(--danger); background: var(--danger-soft); border-radius: var(--shape-sm);
+}
+
+.songs-paste { width: 100%; font-family: var(--chart-mono, var(--font-mono)); font-size: 14px; line-height: 1.5; resize: vertical; }
+.songs-import-buttons { gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+.songs-found { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 12px; }
+.songs-found-row { display: flex; flex-direction: column; padding: 8px 12px; background: var(--surface-2); border-radius: var(--shape-sm); }
+.songs-found-row .hint { margin: 0; }
+.songs-raw { white-space: pre-wrap; font-family: var(--chart-mono, var(--font-mono)); font-size: 14px; }

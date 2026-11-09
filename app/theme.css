@@ -1,0 +1,51 @@
+/* Chords' look: warm paper in the light, near-black on stage. Features use these names,
+   never colours of their own. Chord symbols use --chord, notations --mark. */
+
+:root {
+  --bg: #f6f1ea;
+  --surface: #fffdf9;
+  --surface-2: #efe8de;
+  --text: #1c1917;
+  --text-2: #3b3530;
+  --muted: #6b625a;
+  --line: #e4dbcf;
+  --accent: #b4441c;
+  --accent-ink: #ffffff;
+  --accent-soft: #f8e4d9;
+  --chord: #b4441c;          /* chord symbols on a chart */
+  --mark: #2f5d8a;           /* notations (*stop, *hit, …) */
+  --mark-soft: #e1ebf5;
+  --cue: #5d6b2f;            /* "> cue" lines */
+  --bar-line: #cfc4b6;       /* bar lines on a chart */
+  --top: #1c1917;
+  --top-2: #2a2522;
+  --on-top: #ffffff;
+  --on-top-muted: #cdc3b9;
+  --tab-ink: #3b3530;
+  --glow: #b4441c;
+  --chart-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0c0b;
+    --surface: #1a1715;
+    --surface-2: #26221f;
+    --text: #f4efe9;
+    --text-2: #ddd5cc;
+    --muted: #a99f95;
+    --line: #2f2a26;
+    --accent: #ff9a6b;
+    --accent-ink: #1a0d06;
+    --accent-soft: #3a2218;
+    --chord: #ffb38a;
+    --mark: #8cc3ff;
+    --mark-soft: #1a2b3d;
+    --cue: #c3d68a;
+    --bar-line: #4a423c;
+    --top: #0e0c0b;
+    --top-2: #1a1715;
+    --tab-ink: #ddd5cc;
+    --glow: #ff9a6b;
+  }
+}
