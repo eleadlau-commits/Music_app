@@ -1,17 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Chords app icon: the chord symbol C7 (Inter Display Bold, turned into outlines so no font is needed)
+       on the app's near-black. The background is flat #1c1917 to match the Android icon background. -->
   <rect width="512" height="512" fill="#1c1917"/>
-  <!-- two bars of a chart: bar lines, beat dots and a chord in each -->
-  <g stroke="#cfc4b6" stroke-width="14" stroke-linecap="round">
-    <path d="M96 150v212M256 150v212M416 150v212"/>
-  </g>
-  <g fill="#ff9a6b">
-    <circle cx="146" cy="226" r="34"/>
-    <circle cx="306" cy="286" r="34"/>
-    <rect x="166" y="120" width="12" height="108" rx="6"/>
-    <rect x="326" y="180" width="12" height="108" rx="6"/>
-  </g>
-  <g fill="#6b625a">
-    <circle cx="126" cy="330" r="9"/><circle cx="166" cy="330" r="9"/><circle cx="206" cy="330" r="9"/>
-    <circle cx="286" cy="330" r="9"/><circle cx="326" cy="330" r="9"/><circle cx="366" cy="330" r="9"/>
+  <g transform="translate(97.0 363.0) scale(0.2941)">
+    <path fill="#f6f1ea" d="M376.5 11.7C546.9 11.7 673.8-93.3 696.8-255.4L545.4-255.4C526.9-169.9 464.4-121.1 378.4-121.1C254.4-121.1 182.1-215.3 182.1-363.3C182.1-512.2 254.9-606.4 378.4-606.4C464.8-606.4 527.8-557.1 544.9-471.2L696.8-471.2C673.8-633.8 546.9-739.3 376.5-739.3C176.3-739.3 30.8-595.7 30.8-363.3C30.8-132.3 176.8 11.7 376.5 11.7Z"/>
+    <path fill="#ff9a6b" d="M758.7-273.6L856.2-273.6L1050.8-660.2L1050.8-739.3L726.8-739.3L726.8-659.3L954.0-659.3L954.0-658.6Z"/>
   </g>
 </svg>

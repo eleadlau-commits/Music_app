@@ -644,7 +644,8 @@ class Project:
                 (web / f'{name}.html').write_text(self._web_page(app, f, page), 'utf-8')
         if (self.app_dir / 'icons').is_dir():
             shutil.copytree(self.app_dir / 'icons', web / 'icons',
-                            ignore=shutil.ignore_patterns('icon-only.png'))
+                            ignore=shutil.ignore_patterns('icon-only.png', 'icon-foreground.png',
+                                                           'icon-background.png', '*.svg'))
         if (self.app_dir / 'fonts').is_dir():
             shutil.copytree(self.app_dir / 'fonts', web / 'fonts')
         test_files = []
@@ -924,10 +925,18 @@ fetch('/__folio_report', {{ method: 'POST', body: JSON.stringify({{ kind: 'tests
                 ios['pods'] += [line.strip() for line in i.get('pods', []) if line.strip() not in ios['pods']]
         (out / 'native.json').write_text(json.dumps({'android': android, 'ios': ios}, indent=2) + '\n', 'utf-8')
 
-        icon = self.app_dir / 'icons' / 'icon-only.png'
-        if icon.exists():
-            (out / 'assets').mkdir(exist_ok=True)
-            shutil.copy2(icon, out / 'assets' / 'icon-only.png')
+        # icon-only.png makes the old-style icons. Android 8+ shows the adaptive icon instead,
+        # which needs both layers; without them the phone keeps Capacitor's placeholder icon.
+        for name in ('icon-only.png', 'icon-foreground.png', 'icon-background.png'):
+            icon = self.app_dir / 'icons' / name
+            if icon.exists():
+                (out / 'assets').mkdir(exist_ok=True)
+                shutil.copy2(icon, out / 'assets' / name)
+        icons = self.app_dir / 'icons'
+        if (icons / 'icon-only.png').exists() and not (
+                (icons / 'icon-foreground.png').exists() and (icons / 'icon-background.png').exists()):
+            warnings.append('app/icons/ has icon-only.png but not icon-foreground.png and icon-background.png, '
+                            'so Android 8 and newer will show the placeholder icon')
         return warnings
 
     def _report(self, details: dict, log: Log) -> str:

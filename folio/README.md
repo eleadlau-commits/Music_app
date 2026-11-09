@@ -256,7 +256,7 @@ The compiler only needs Python 3.9 or newer. The browser tests also need Chrome 
    - `dist/package.json` (Capacitor and the packages features asked for)
    - `dist/capacitor.config.json` (merged from every feature)
    - `dist/native.json` (Android permissions and files, iPhone settings, files and Podfile lines)
-   - `dist/assets/icon-only.png`
+   - `dist/assets/icon-only.png`, `icon-foreground.png` and `icon-background.png`
 7. **Writes `dist/report.html`:** the features, their slots, services and events, and the log.
 
 ## 9. Tests
@@ -303,11 +303,13 @@ On GitHub, these run before every release. If anything fails, nothing is release
    ```
    For the iPhone app, `native.ios` can add `appId` (if the iPhone app needs a different id, e.g. because Apple says it's taken), `plist` (Info.plist entries for the whole app, e.g. `"ITSAppUsesNonExemptEncryption": false`) and `devices` (`"iphone"`, or the default `"iphone-and-ipad"`).
 3. Optionally, set the app's own colours and fonts in `app/theme.css`, with font files in `app/fonts/`.
-4. Add icons to `app/icons/`: `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`, and `icon-only.png` (1024×1024, for the phone app).
+4. Add icons to `app/icons/`: `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`, and `icon-only.png` (1024×1024, for the phone app). For Android 8 and newer, also add the two layers of the adaptive icon, 1024×1024 each: `icon-foreground.png` (the drawing on a clear background, kept inside the middle ~60% because launchers crop the rest into a circle or squircle) and `icon-background.png` (usually one flat colour). Without them the phone shows Capacitor's placeholder icon, and the build warns.
 5. Create features with `python build.py new-feature …`. Features that aren't tied to one app can be copied between apps, such as campus-card.
 6. Optionally, add `app/tests/seed.js` with sample data for the tests.
 
 Folio's version is in `folio/VERSION`. When the framework changes in a way features notice, the version goes up and the change is described here.
+
+**1.17.1:** the Android app gets its real icon on Android 8 and newer. The build now passes `app/icons/icon-foreground.png` and `icon-background.png` to the icon generator as the adaptive icon's two layers (before, only `icon-only.png` went, so phones kept Capacitor's placeholder), and warns when they're missing. Features written for 1.17 keep working.
 
 **1.17.0:** the whole-app test starts the app as it normally would. An app whose `app/tests/seed.js` can open on a chosen view lists them in app.json, `"tests": { "startViews": ["home", "week"] }`, and the test starts once on each (as `#view=…`), which is what it always did before for Day, Week, Home and Upcoming. Features written for 1.16 keep working.
 
