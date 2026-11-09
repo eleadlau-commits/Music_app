@@ -11,7 +11,7 @@ It's built with **Folio**, a small framework in `folio/` where every feature is 
 `app/features/` and a compiler (`python build.py`) assembles the app. **Read
 `folio/README.md` before changing anything.** It explains slots, services, events,
 feature.json, storage and the rules. This copy of Folio came from the timetable app (1.16.0);
-1.17.0 lets the whole-app test start the app normally (see the README).
+1.17.0 lets the whole-app test start the app normally, and 1.17.1 gives the Android app its adaptive icon (see the README).
 
 ## Who you're working with
 
