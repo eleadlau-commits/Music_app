@@ -5,7 +5,8 @@ with a line saying the key, tempo and time signature, and a red tag when some ch
 couldn't be read.
 
 **Add songs** (the + next to the title): paste a chart (what Claude wrote, or a `.chords`
-file's text), press Paste, or Choose a file (`.chords`, `.txt`). It shows what it found
+file's text), press Paste, or Choose a file (any file can be picked, because phones don't know the `.chords` type and
+would grey those files out; a file that isn't text, or has no songs in it, gets a message). It shows what it found
 before adding. A file can hold several songs split by a line of `---`; each becomes its own
 song. The first time the app opens it adds the two made-up examples from `chord-format`.
 

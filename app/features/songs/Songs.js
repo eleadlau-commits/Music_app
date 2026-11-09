@@ -168,7 +168,9 @@ export default class Songs extends Feature {
         if (ids.length === 1) this.open(ids[0]);
       }
     } }, 'Add');
-    const picker = ui.filePicker('.chords,.chord,.txt,.cho,text/plain');
+    // Any file: phones don't know the .chords type, so a filter (".chords" or text/plain) greys
+    // the files out on Android and iPhone. What's inside is checked once it's read.
+    const picker = ui.filePicker('');
     const preview = () => {
       const songs = box.value.trim() ? this.chords.parseFile(box.value) : [];
       add.disabled = !songs.length;
@@ -195,8 +197,11 @@ export default class Songs extends Feature {
           const file = await picker.pick();
           if (!file) return;
           if (file.size > 2_000_000) return this.toast('That file is too big to be a chart.');
-          box.value = await file.text();
+          const text = await file.text();
+          if (text.includes('\u0000')) return this.toast(`"${file.name}" isn't a text file. Choose a .chords or .txt file.`);
+          box.value = text;
           preview();
+          if (!this.chords.parseFile(text).length) this.toast(`There are no songs in "${file.name}".`);
         } }, 'Choose a file')),
       found,
       add,
