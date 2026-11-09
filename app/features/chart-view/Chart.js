@@ -24,7 +24,8 @@ export default class Chart extends Feature {
     this.add('chart.tools', { id: 'delete', label: 'Delete this song', icon: 'trash', order: 90, onClick: (id, chart) => this.confirmDelete(id, chart) });
 
     this.provide('chart', {
-      open: (id) => this.open(id),
+      // list: { name, ids } plays a set: Previous and Next move through ids, starting at id.
+      open: (id, { list } = {}) => this.open(id, list),
       // A chart drawn from text, for other features to show (e.g. the format guide's examples).
       render: (text, opts = {}) => this.draw(layout(this.chords.parseSong(text), this.chords, { lyrics: true, ...opts })),
     });
@@ -35,11 +36,12 @@ export default class Chart extends Feature {
     this.storage.set('view', this.view);
   }
 
-  open(id) {
+  open(id, list = null) {
     const song = this.songs.get(id);
     if (!song) return;
+    this.current?.d.close();
     const d = ui.dialog({ title: '', className: 'chart-dialog', onClose: () => { this.current = null; this.stopScroll(); this.releaseWake(); d.element.remove(); } });
-    this.current = { id, d };
+    this.current = { id, d, list: list?.ids?.length ? { name: list.name || 'Set', ids: list.ids } : null };
     this.keepAwake();
     this.drawOpen();
     d.open();
@@ -59,11 +61,47 @@ export default class Chart extends Feature {
     cur.d.setTitle(model.title || 'Untitled song');
     const scrollTop = cur.d.element.scrollTop;
     cur.d.setContent(
+      this.setBar(cur),
       this.toolbar(cur.id, parsed, model, { semitones, mode }),
       this.problems(parsed),
       this.draw(model),
+      this.nextUp(cur),
       this.playButton());
     cur.d.element.scrollTop = scrollTop;
+  }
+
+  // Playing a set: where we are, and Previous / Next.
+  setBar(cur) {
+    if (!cur.list) return null;
+    const i = cur.list.ids.indexOf(cur.id);
+    const n = cur.list.ids.length;
+    return el('div', { class: 'chart-set' },
+      el('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Previous song', disabled: i <= 0, onclick: () => this.go(-1) }, ui.icon('left')),
+      el('div', { class: 'chart-set-name' }, el('b', {}, cur.list.name), el('span', {}, `${i + 1} of ${n}`)),
+      el('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Next song', disabled: i >= n - 1, onclick: () => this.go(1) }, ui.icon('right')));
+  }
+
+  nextUp(cur) {
+    if (!cur.list) return null;
+    const i = cur.list.ids.indexOf(cur.id);
+    const nextId = cur.list.ids[i + 1];
+    if (!nextId) return el('p', { class: 'chart-set-end' }, `End of ${cur.list.name}`);
+    const next = this.songs.parsed(nextId);
+    return el('button', { type: 'button', class: 'btn primary block chart-next', onclick: () => this.go(1) }, `Next: ${next?.title || 'Untitled song'}`);
+  }
+
+  go(step) {
+    const cur = this.current;
+    if (!cur?.list) return;
+    const ids = cur.list.ids.filter((id) => this.songs.get(id)); // skip songs deleted since
+    const i = ids.indexOf(cur.id);
+    const to = ids[i + step];
+    if (!to) return;
+    cur.list.ids = ids;
+    this.stopScroll();
+    cur.id = to;
+    this.drawOpen();
+    cur.d.element.scrollTop = 0;
   }
 
   setPref(id, change) {

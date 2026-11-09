@@ -226,6 +226,22 @@ until they change again. After `{key: …}`, numbers are counted from the new ke
 Separate songs with a line of three dashes, `---`. The app adds each as its own song. Handy
 for asking Claude for a whole set at once.
 
+**A set list file** starts with a comment naming the set, then each song after `---`:
+
+```
+// Set: Friday at The Anchor
+---
+title: Harbour Lights
+…
+---
+title: Numbers Game
+…
+```
+
+Importing it adds the songs and makes the set, in that order. **Share as one file** on a set
+writes exactly this, so the band can pass sets around. (Ask Claude for a set the same way:
+"start with `// Set: name`".)
+
 ## 11. Mistakes
 
 The app never refuses a file. Anything it can't read is shown as written, and **Things to

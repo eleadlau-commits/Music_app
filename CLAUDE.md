@@ -39,12 +39,13 @@ In start order. `python build.py list` shows the same, and `dist/report.html` ma
 | Feature | What it does | Requires (uses) | Adds to | Offers |
 |---|---|---|---|---|
 | `chord-format` | Reads `.chords` text (`parse.js`); chord symbols, keys, transposing, letters ↔ Nashville numbers (`theory.js`); two made-up example songs (`examples.js`). Shows nothing | | | service `chords` |
-| `songs` | The Songs tab (opens first): the list, search, Add songs (paste, Paste button, choose a file; several songs per file split by `---`); adds the examples on first open | chord-format | views | service `songs`; event `songs:changed` |
-| `chart-view` | A song as a chart, full screen: bars by beat, chords over lyrics, notations and legend, time/key/tempo changes, problems with line numbers; transpose, Chords / 1 4 5, text size, Lyrics / Bars, scrolling by itself, screen kept on; Share or save the file, Delete | songs, chord-format | chart.tools | service `chart` (`open`, `render`); slot `chart.tools` |
+| `songs` | The Songs tab (opens first): the list, search, Add songs (paste, Paste button, choose a file; several songs per file split by `---`); adds the examples on first open | chord-format | views | service `songs`; events `songs:changed`, `songs:imported` |
+| `chart-view` | A song as a chart, full screen: bars by beat, chords over lyrics, notations and legend, time/key/tempo changes, problems with line numbers; transpose, Chords / 1 4 5, text size, Lyrics / Bars, scrolling by itself, screen kept on; Share or save the file, Delete | songs, chord-format | chart.tools | service `chart` (`open(id, { list })`, `render`); slot `chart.tools` |
 | `chart-editor` | Edit in a chart's ⋮ menu: the text with quick keys, problems as you type, preview, draft kept until Save | songs, chord-format (chart-view) | chart.tools | |
+| `setlists` | The Sets tab: make a set, add songs (ticked from the list), reorder, play it (each chart gets Previous / Next and "Next: title"), Add to a set from a chart's ⋮, Share as one file (`// Set: name` then songs split by `---`); importing such a file makes the set again | songs (chart-view) | views, chart.tools | service `setlists` |
 | `guide` | The Guide tab: Copy the prompt for Claude (with the song filled in), Paste the answer, the quick reference, an example chart | (chart-view, songs) | views | |
 
-**The screen:** Folio's frame: the top bar (menu on the left), the open tab's title, and two tabs along the bottom: **Songs · Guide**. Charts and the editor open full screen over them. Colours are in `app/theme.css` (warm paper in light mode, near-black in dark); chords use `--chord`, notations `--mark`, cues `--cue`, bar lines `--bar-line`, and charts use `--chart-mono` for chord names.
+**The screen:** Folio's frame: the top bar (menu on the left), the open tab's title, and three tabs along the bottom: **Songs · Sets · Guide**. Charts and the editor open full screen over them. Colours are in `app/theme.css` (warm paper in light mode, near-black in dark); chords use `--chord`, notations `--mark`, cues `--cue`, bar lines `--bar-line`, and charts use `--chart-mono` for chord names.
 
 ## Branches
 
