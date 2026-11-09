@@ -24,7 +24,11 @@ Shows a song full screen as a chart. Opened from the Songs tab (through the `cha
 
 **Saved data:** `songs` → `{ [song id]: { semitones, mode } }`, `view` → `{ size, lyrics, speed }`.
 
-**Service `chart`:** `open(id)`, `render(text, { semitones, mode, lyrics })` → an element with
+**Playing a set:** opened with a list (from `setlists`), a bar at the top says the set's name
+and which song this is (3 of 12), with Previous and Next, and a **Next: title** button
+under the chart. Songs deleted since are skipped.
+
+**Service `chart`:** `open(id, { list: { name, ids } })` (the list is optional), `render(text, { semitones, mode, lyrics })` → an element with
 the chart drawn from `.chords` text (no toolbar).
 
 **Slot `chart.tools`:** `{ id, label, icon, order, onClick(songId, chart) }`, rows in the ⋮

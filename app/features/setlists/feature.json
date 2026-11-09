@@ -1,0 +1,9 @@
+{
+  "name": "Set lists",
+  "description": "Set lists for gigs: pick songs, put them in order, and play straight through with Next.",
+  "version": "1.0.0",
+  "main": "Setlists.js",
+  "styles": ["style.css"],
+  "requires": ["songs"],
+  "uses": ["chart-view"]
+}
