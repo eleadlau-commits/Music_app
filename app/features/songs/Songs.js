@@ -93,6 +93,10 @@ export default class Songs extends Feature {
       return id;
     });
     this.save();
+    // A file shared from a set list starts with "// Set: name"; tell set lists about it.
+    const first = String(text).split('\n').find((l) => l.trim())?.trim() || '';
+    const set = first.match(/^\/\/\s*Set:\s*(.+)$/);
+    this.emit('songs:imported', { ids, set: set ? set[1].trim() : null });
     if (!quiet) this.toast(ids.length === 1 ? `Added "${titleOf(found[0], found[0].source)}".` : `Added ${ids.length} songs.`);
     return ids;
   }

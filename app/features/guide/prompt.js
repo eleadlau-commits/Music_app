@@ -36,7 +36,7 @@ I ^walk this | ^road a|^lone ^now | ^Stop!
 // The prompt for Claude. {song} is replaced by what the person types (or left as a gap).
 export const PROMPT = `Write a chord chart in the Chords format described below, for: {song}
 
-Reply with only the chart in one code block, no explanation. If you aren't sure of a chord, a section or a lyric, write your best guess and put "// check" at the end of that line. Don't write out full copyrighted lyrics: give the first few words of each line followed by "…" (still with ^ marks), unless I've given you the words. For several songs, separate them with a line of three dashes (---).
+Reply with only the chart in one code block, no explanation. If you aren't sure of a chord, a section or a lyric, write your best guess and put "// check" at the end of that line. Don't write out full copyrighted lyrics: give the first few words of each line followed by "…" (still with ^ marks), unless I've given you the words. For several songs, separate them with a line of three dashes (---); for a set list, start with a line "// Set: name" and put --- before each song.
 
 THE CHORDS FORMAT
 What a line starts with decides what it is:

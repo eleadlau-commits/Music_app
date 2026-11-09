@@ -20,6 +20,8 @@ sorted by title, `get(id)` → the saved song, `parsed(id)` → the song read by
 (worked out once per change), `add(text)` → new ids, `update(id, text)`, `remove(id)`,
 `import()` (opens Add songs).
 
-**Event:** `songs:changed` (`{ count }`) after any change.
+**Events:** `songs:changed` (`{ count }`) after any change; `songs:imported` (`{ ids, set }`)
+after Add songs, where `set` is the name from a first line `// Set: name` (a file shared from
+a set list), or null.
 
 Requires `chord-format`.

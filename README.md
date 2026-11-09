@@ -34,6 +34,10 @@ word each chord lands on, `{3/4}` changes the time signature, `*hit` adds a nota
     shown as you type), **Share or save the file**, **Delete this song**.
   - If a file has mistakes, **Things to check** at the top lists them with line numbers.
     Nothing is ever refused: what can't be read is shown as written.
+- **Sets**: set lists for gigs. **+** makes one; **Add songs** ticks songs from your list;
+  ⌃ ⌄ put them in order. **▶ Play the set** opens each chart in turn with **Previous / Next**
+  (and a **Next: title** button at the bottom). Add a song to a set from a chart's **⋮** too.
+  **Share as one file** sends the whole set; importing that file makes the set again.
 - **Guide**: get a chart from Claude. Type the song, **Copy the prompt**, paste it into Claude,
   then **Paste the answer**. Also the quick reference and an example.
 
