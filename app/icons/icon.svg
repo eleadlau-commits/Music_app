@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#1c1917"/>
+  <!-- two bars of a chart: bar lines, beat dots and a chord in each -->
+  <g stroke="#cfc4b6" stroke-width="14" stroke-linecap="round">
+    <path d="M96 150v212M256 150v212M416 150v212"/>
+  </g>
+  <g fill="#ff9a6b">
+    <circle cx="146" cy="226" r="34"/>
+    <circle cx="306" cy="286" r="34"/>
+    <rect x="166" y="120" width="12" height="108" rx="6"/>
+    <rect x="326" y="180" width="12" height="108" rx="6"/>
+  </g>
+  <g fill="#6b625a">
+    <circle cx="126" cy="330" r="9"/><circle cx="166" cy="330" r="9"/><circle cx="206" cy="330" r="9"/>
+    <circle cx="286" cy="330" r="9"/><circle cx="326" cy="330" r="9"/><circle cx="366" cy="330" r="9"/>
+  </g>
+</svg>

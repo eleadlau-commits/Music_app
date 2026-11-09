@@ -1,0 +1,9 @@
+{
+  "name": "Chart editor",
+  "description": "Edit a song's .chords text on the phone, with quick keys for bar lines, beats and chords, and problems shown as you type.",
+  "version": "1.0.0",
+  "main": "Editor.js",
+  "styles": ["style.css"],
+  "requires": ["songs", "chord-format"],
+  "uses": ["chart-view"]
+}

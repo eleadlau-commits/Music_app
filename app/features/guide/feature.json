@@ -1,0 +1,8 @@
+{
+  "name": "Guide",
+  "description": "How to write a chart, a quick reference, and the prompt to copy into Claude.",
+  "version": "1.0.0",
+  "main": "Guide.js",
+  "styles": ["style.css"],
+  "uses": ["chart-view", "songs"]
+}

@@ -1,0 +1,19 @@
+.editor-dialog .dialog-body { width: min(100%, 980px); }
+.editor-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.editor-keys { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.editor-key {
+  flex: none; min-width: 44px; height: 44px; padding: 0 10px; border: 1px solid var(--line); border-radius: var(--shape-btn);
+  background: var(--surface); color: var(--text); font-family: var(--chart-mono); font-size: 18px; font-weight: 600; cursor: pointer;
+}
+.editor-key:active { background: var(--accent-soft); }
+.editor-text {
+  min-height: 55vh; font-family: var(--chart-mono); font-size: 15px; line-height: 1.55; white-space: pre; overflow-x: auto;
+  tab-size: 2;
+}
+.editor-status { font-size: 14px; }
+.editor-problems { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.editor-problems li { cursor: pointer; }
+.editor-problems li.error { color: var(--danger); }
+.editor-ok { color: var(--muted); margin: 0; }
+.editor-note { margin: 0; font-size: 14px; color: var(--text-2); background: var(--accent-soft); padding: 8px 12px; border-radius: var(--shape-sm); }
+.editor-preview { border: 1px dashed var(--line); border-radius: var(--shape); padding: 8px 12px; }

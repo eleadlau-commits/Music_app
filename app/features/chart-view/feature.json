@@ -1,0 +1,8 @@
+{
+  "name": "Chart",
+  "description": "Shows a song as a chart: chords by beat, lyrics under chords, notations. Transpose, chords or numbers, text size, and scrolling by itself.",
+  "version": "1.0.0",
+  "main": "Chart.js",
+  "styles": ["style.css"],
+  "requires": ["songs", "chord-format"]
+}

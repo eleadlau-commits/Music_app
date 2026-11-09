@@ -1,0 +1,190 @@
+# Tests the app, then builds the Android app (an APK on the Releases page) and publishes the
+# web version to GitHub Pages, every time you upload changes to main or press "Run workflow" on
+# the Actions tab. If any test fails, nothing is released.
+
+name: Build app
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # to attach the APK to a release, and save the signing key
+  pages: write      # to publish the web version
+  id-token: write
+
+concurrency:
+  group: build
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # Compiler tests, feature tests, and the delete-a-folder test, in Chrome.
+      - name: Run all tests
+        run: python build.py test --require-browser
+
+  android:
+    name: Android app (APK)
+    needs: [test]
+    # Builds on main, or on any branch with "Run workflow" to try it. Only main releases anything
+    # (the APK on Releases).
+    if: github.ref_name == 'main' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Compile the app
+        run: python build.py --build ${{ github.run_number }}
+
+      - name: Install Capacitor and the packages features asked for
+        working-directory: dist
+        run: npm install
+
+      - name: Create the Android project
+        working-directory: dist
+        run: npx cap add android
+
+      - name: Add the permissions features asked for
+        run: python build.py android-manifest dist/android/app/src/main/AndroidManifest.xml
+
+      - name: Add the files and settings features asked for
+        run: python build.py android-project dist/android
+
+      - name: Generate app icons
+        continue-on-error: true   # falls back to the default icon if this fails
+        working-directory: dist
+        run: npx --yes @capacitor/assets generate --android --iconBackgroundColor '#1c1917' --iconBackgroundColorDark '#1c1917'
+
+      - name: Copy the app into the Android project
+        working-directory: dist
+        run: npx cap sync android
+
+      # Every build must be signed with the same key, or Android refuses to install an
+      # update over the old app (and you'd lose your notes and settings by uninstalling).
+      # The first build creates the key and saves it in the repository.
+      - name: Use the same signing key for every build
+        run: |
+          if [ ! -f signing/debug.keystore ]; then
+            mkdir -p signing
+            keytool -genkeypair -keystore signing/debug.keystore -storepass android \
+              -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 \
+              -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add signing/debug.keystore
+            git commit -m "Save signing key so app updates install over the old version"
+            git push origin "HEAD:${{ github.ref_name }}" || echo "::warning::Couldn't save the signing key. The next build will make a new one."
+          fi
+          # Tell the build to sign with the saved key. (Copying it to ~/.android isn't enough:
+          # on GitHub's machines the build looks elsewhere, quietly makes a new key every time,
+          # and Android then refuses to install the update.)
+          cat >> dist/android/app/build.gradle <<EOF
+
+          android {
+              signingConfigs {
+                  debug {
+                      storeFile file("$GITHUB_WORKSPACE/signing/debug.keystore")
+                      storePassword "android"
+                      keyAlias "androiddebugkey"
+                      keyPassword "android"
+                  }
+              }
+          }
+          EOF
+
+      - name: Set the version number
+        run: |
+          VERSION=$(python build.py version)
+          sed -i -E "s/versionCode [0-9]+/versionCode ${{ github.run_number }}/; s/versionName \"[^\"]*\"/versionName \"$VERSION (build ${{ github.run_number }})\"/" dist/android/app/build.gradle
+          grep -E "versionCode|versionName" dist/android/app/build.gradle
+
+      # Google Play only accepts apps made for Android 16 (API level 36) or newer. Capacitor 7 makes
+      # them for Android 15, so raise it. Android 16 always draws the app under the status and
+      # navigation bars; "adjustMarginsForEdgeToEdge": "auto" in capacitor.config.json keeps it clear
+      # of them. Google Play's automatic protection also needs Android 7 (API level 24) or newer, one
+      # step up from Capacitor's Android 6.
+      - name: Make it for Android 16 (and Android 7 or newer)
+        run: |
+          sed -i -E 's/targetSdkVersion = [0-9]+/targetSdkVersion = 36/; s/minSdkVersion = [0-9]+/minSdkVersion = 24/' dist/android/variables.gradle
+          grep -q 'targetSdkVersion = 36' dist/android/variables.gradle
+          grep -q 'minSdkVersion = 24' dist/android/variables.gradle
+
+      - name: Build the APK
+        working-directory: dist/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      # Never release an APK signed with a different key: it wouldn't install over the app
+      # people already have.
+      - name: Check the APK is signed with the saved key
+        run: |
+          fingerprint() { grep -m1 'SHA256:' | sed -E 's/.*SHA256: *//' | tr -d ': ' ; }
+          SAVED=$(keytool -list -v -keystore signing/debug.keystore -storepass android | fingerprint)
+          # apksigner, not keytool: from Android 7 (minSdkVersion 24) the APK only has the newer
+          # signature, which keytool can't read.
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -n 1)apksigner
+          APK=$("$APKSIGNER" verify --print-certs dist/android/app/build/outputs/apk/debug/app-debug.apk | grep -m1 'certificate SHA-256 digest:' | sed -E 's/.*digest: *//' | tr 'a-f' 'A-F')
+          echo "Saved key: $SAVED"
+          echo "APK key:   $APK"
+          if [ -z "$SAVED" ] || [ "$SAVED" != "$APK" ]; then
+            echo "::error::The APK isn't signed with signing/debug.keystore, so it wouldn't install over the app people have. Nothing was released."
+            exit 1
+          fi
+
+      - name: Name the APK
+        run: cp dist/android/app/build/outputs/apk/debug/app-debug.apk Chords.apk
+
+      - name: Publish it as a release
+        if: github.ref_name == 'main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Chords (build ${{ github.run_number }})
+          body: Open this page on your Android phone, tap **Chords.apk** to download it, then open the file to install.
+          files: Chords.apk
+          make_latest: true
+
+  website:
+    name: Web version (GitHub Pages)
+    needs: [test]
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    # Only works once Pages is switched on (Settings → Pages → Source: GitHub Actions).
+    # Until then this job fails without affecting the APK.
+    continue-on-error: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile the app
+        run: python build.py --build ${{ github.run_number }}
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/web
+      - id: deploy
+        uses: actions/deploy-pages@v4

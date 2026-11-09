@@ -1,0 +1,6 @@
+{
+  "name": "Chords format",
+  "description": "Reads .chords files: bars, beats split into smaller parts, lyrics under chords, time and key changes, notations. Transposes and switches between letters and numbers.",
+  "version": "1.0.0",
+  "main": "ChordFormat.js"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "chords",
+  "name": "Chords",
+  "description": "Chord charts for the band: import a .chords file (or paste one from Claude), transpose it, and play from it.",
+  "version": "0.1.0",
+  "lang": "en",
+  "theme": {
+    "accent": "#b4441c",
+    "accentDark": "#ff9a6b",
+    "background": "#1c1917",
+    "backgroundDark": "#0e0c0b"
+  },
+  "native": {
+    "appId": "io.github.chords.app"
+  }
+}
